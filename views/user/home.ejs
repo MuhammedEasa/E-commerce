@@ -107,9 +107,9 @@
                   </div>
                 </div>
               </div>
-              <% if(products.length> 2) { %>
+              <% if(products.length> 0) { %>
                  <% products.forEach( (product, index)=> { %> 
-                  <% if(product.isListed === true && index === 2 ){ %>
+                  <% if(product.isListed === true && index === 0 ){ %>
               <div class="col-lg-7">
                 <div class="banner-img">
                   <img
@@ -144,9 +144,9 @@
               </div>
             </div>
 
-            <% if(products.length> 1) { %> 
+            <% if(products.length> 3) { %> 
               <% products.forEach( (product, index)=> { %> 
-                <% if(product.isListed === true && index === 1 ){ %>
+                <% if(product.isListed === true && index === 3 ){ %>
             <div class="col-lg-7">
               <div class="banner-img">
                 <img
