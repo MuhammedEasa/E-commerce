@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Place Order</title>
+        <!-- Favicon-->
+        <link rel="shortcut icon" href="img/fav.png" />
+    <!-- Choose one version of Bootstrap and include it -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    
+    <!-- Include either Bootstrap JS or the bundle (not both) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Include jQuery (choose one version) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+    <!-- Other stylesheet links -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+    <link rel="stylesheet" href="/css/linearicons.css" />
+    <link rel="stylesheet" href="/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/css/themify-icons.css" />
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <link rel="stylesheet" href="/css/owl.carousel.css" />
+    <link rel="stylesheet" href="/css/nice-select.css" />
+    <link rel="stylesheet" href="/css/nouislider.min.css" />
+    <link rel="stylesheet" href="/css/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="/css/ion.rangeSlider.skinFlat.css" />
+    <link rel="stylesheet" href="/css/magnific-popup.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/otp.css" />
+
+    <!-- Other script tags -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <style>
+      body {
+        background-color: #222222;
+      }
+      .header_area{
+        position: fixed;
+        width: 100%;
+        top: 0;
+      }
+      .card {
+        border: none;
+      }
+      .image {
+        position: relative;
+      }
+      .image span {
+        background-color: blue;
+        color: #fff;
+        padding: 6px;
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        font-size: 13px;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: -0px;
+        right: 0px;
+      }
+      .user-details h4 {
+        color: blue;
+      }
+      .ratings {
+        font-size: 30px;
+        font-weight: 600;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        color: #f9b43a;
+      }
+      .user-details span {
+        text-align: left;
+      }
+      .inputs label {
+        display: flex;
+        margin-left: 3px;
+        font-weight: 500;
+        font-size: 13px;
+        margin-bottom: 4px;
+      }
+      .inputs input {
+        font-size: 14px;
+        height: 40px;
+        border: 2px solid #ced4da;
+      }
+      .inputs input:focus {
+        box-shadow: none;
+        border: 2px solid blue;
+      }
+      .about-inputs label {
+        display: flex;
+        margin-left: 3px;
+        font-weight: 500;
+        font-size: 13px;
+        margin-bottom: 4px;
+      }
+      .about-inputs textarea {
+        font-size: 14px;
+        height: 100px;
+        border: 2px solid #ced4da;
+        resize: none;
+      }
+      .about-inputs textarea:focus {
+        box-shadow: none;
+      }
+      .btn {
+        font-weight: 600;
+      }
+      .btn:focus {
+        box-shadow: none;
+      }
+      .hidden {
+    display: none;
+}
+
+
+@media (max-width: 768px) {
+  .full-container {
+    width: 125%;
+    margin-left: -20px;
+  }
+}
+
+
+    </style>
+      
+  </head>
+  <body>
+    <header class="header_area sticky-header">
+      <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+          <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <a class="navbar-brand logo_h" href="/"
+              ><img src="img/logo.png" alt="E-Cart"
+            /></a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div
+              class="collapse navbar-collapse offset"
+              id="navbarSupportedContent"
+            >
+              <ul class="nav navbar-nav menu_nav ml-auto">
+                <li class="nav-item ">
+                  <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a href="/Products" class="nav-link" role="button"
+                    >Shop Category</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a href="/cart/<%= userId %>" class="nav-link" role="button"
+                    >Cart</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/contact">Contact</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="/Account/<%= userId %>">
+                    <%= userName ? userName : 'User' %>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="1em"
+                      viewBox="0 0 448 512"
+                    >
+                      <path
+                        d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"
+                      />
+                    </svg>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    href="/logout"
+                    class="nav-link"
+                    role="button"
+                    id="logout-button"
+                    >Logout</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- End Header Area -->
+
+      <!-- content Start -->
+      <div class="container mt-3 full-container" style="background-color: black; color: white; margin-top: 7rem !important">
+        <div class="card p-3 text-center">
+          <h4>Order Summary</h4>
+          <form action="/placeOrder" method="POST">
+            <div class="col-md-6">
+              <h4><strong>Product Details</strong></h4>
+              <% let totalPrice = 0; %>
+              <% if (cart.length > 0) { %>
+                <% cart.forEach((cartitem) => { %>
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                      <p class="mb-0">
+                        <strong><%= cartitem.product %></strong>
+                      </p>
+                      <p class="mb-0 text-muted">
+                        ₹<%= cartitem.price %> (Quantity: <%= cartitem.quantity %>)
+                      </p>
+                    </div>
+                  </div>
+                <% }); %>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div>
+                <p><strong>Total Price: ₹<%= finalTotalPrice.toFixed(2) %></strong></p>
+              </div>
+              </div>
+              <% } else { %>
+                <p class="text-muted">No items in the cart.</p>
+              <% } %>
+            </div>
+            
+            <div class="mb-3">
+              <label for="payment" class="form-label">Payment Method</label>
+              <select class="form-control" id="payment-options" name="paymentmode">
+                <option value="cash-on-delivery">Cash On Delivery</option>
+                <option value="net-banking">Net Banking</option>
+                <option value="wallet">Wallet</option>
+            </select>
+            </div>
+            <h3>Address</h3>
+            <hr>
+<!-- Display addresses with checkboxes -->
+<% address.forEach((address, index) => { %>
+  <div class="form-check" style="display: flex; flex-direction: column; align-items: flex-start;">
+    <input class="form-check-input" type="radio" value="<%= JSON.stringify(address) %>" id="address<%= index %>" name="selectedAddress" <%= index === 0 ? 'checked' : '' %>>
+
+    <label class="form-check-label" for="address<%= index %>" style="display: flex; flex-direction: row; gap: 10px;">
+      <p style="font-weight: 600;">First Name: <%= address.firstname %></p>
+      <p style="font-weight: 600;">Last Name: <%= address.lastname %></p>
+      <p style="font-weight: 600;">Address: <%= address.address %></p>
+      <p style="font-weight: 600;">City: <%= address.city %></p>
+      <p style="font-weight: 600;">State: <%= address.state %></p>
+      <p style="font-weight: 600;">Pincode: <%= address.pincode %></p>
+    </label>
+
+    <hr style="margin-top: 10px; margin-bottom: 10px; border-width: 2px; border-color: #000; font-weight: bold;">
+  </div>
+<% }); %>
+  
+  <!-- If no addresses exist, provide a button to add an address -->
+
+    <a href="/addAddress/<%=userId %>" class="btn btn-primary" style="margin-top: 10px;">Add Address</a>
+ <br>
+ <br>
+  
+    <span id="price" data-totalprice="<%=finalTotalPrice%>"></span>
+    <span id="balance" data-walletbalance="<%=userde.wallet%>"></span>
+    <div class="mb-3">
+      <label for="total" class="form-label">Wallet Balance</label>
+      <input class="form-control" type="text" id="total" value="₹<%= userde.wallet.toFixed(2) %>" disabled>
+    </div>
+            <div class="mb-3">
+              <label for="total" class="form-label">Total Price</label>
+              <input class="form-control" type="text" id="total" value="₹<%= finalTotalPrice.toFixed(2) %>" disabled>
+            </div>
+      
+<% if (address.length > 0) { %>
+  <div id="cashOnDeliveryButton" class="hidden">
+    <button id="placeorder" class="btn btn-primary" type="submit">Cash On Delivery</button>
+           </div>
+    <div id="walletButton" class="hidden">
+      <button id="walletPayment" class="btn btn-primary" type="submit">Pay with Wallet</button>
+      <div id="walletErrorMessage" class="text-danger" style="display: none;"></div>
+    </div>
+<% } else { %>
+  <p class="text-muted">Please add an address before placing an order.</p>
+<% } %>         
+   </form>
+          <div id="razorpayButton" class="hidden">
+            <button id="rzp-button1" class="btn btn-primary" type="submit">Pay with
+                Razorpay</button>
+                 </div>
+        </div>
+      </div>
+      
+
+       <!-- content  End -->
+
+    <!-- Start Footer Area -->
+
+    <footer class="footer-area section_gap">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="single-footer-widget">
+              <h6>About Us</h6>
+              <p>
+                Discover endless shopping possibilities at E-Cart. We offer
+                quality shoes, laptops, headphones, and more, ensuring
+                convenience and satisfaction.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="single-footer-widget">
+              <h6>Newsletter</h6>
+              <p>Stay update with our latest</p>
+              <div class="" id="mc_embed_signup">
+                <form
+                  target="_blank"
+                  novalidate="true"
+                  action="#"
+                  method="get"
+                  class="form-inline"
+                >
+                  <div class="d-flex flex-row">
+                    <input
+                      class="form-control"
+                      name="EMAIL"
+                      placeholder="Enter Email"
+                      onfocus="this.placeholder = ''"
+                      onblur="this.placeholder = 'Enter Email '"
+                      required=""
+                      type="email"
+                    />
+
+                    <button class="click-btn btn btn-default">
+                      <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                    </button>
+                    <div style="position: absolute; left: -5000px">
+                      <input
+                        name="b_36c4fd991d266f23781ded980_aefe40901a"
+                        tabindex="-1"
+                        value=""
+                        type="text"
+                      />
+                    </div>
+
+                    <!-- <div class="col-lg-4 col-md-4">
+                                                  <button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
+                                              </div>  -->
+                  </div>
+                  <div class="info"></div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="single-footer-widget mail-chimp">
+              <h6 class="mb-20">Customer Assistance</h6>
+              <ul class="instafeed d-flex flex-wrap">
+                <li><p>Help</p></li>
+                <li><p>Chat</p></li>
+                <li><p>Support</p></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 col-sm-6">
+            <div class="single-footer-widget">
+              <h6>Follow Us</h6>
+              <p>Let us be social</p>
+              <div class="footer-social d-flex align-items-center">
+                <a href="https://www.facebook.com/muhammedeasa.muhammedeasa.1/"><i class="fa fa-facebook"></i></a>
+            <a href="https://twitter.com/Pavamgamer"><i class="fa fa-twitter"></i></a>
+            <a href="https://www.instagram.com/al_hafiz_muhammed_easa?igshid=NGVhN2U2NjQ0Yg=="><i class="fa fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/feed/"><i class="fa fa-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="footer-bottom d-flex justify-content-center align-items-center flex-wrap"
+        >
+          <p class="footer-text m-0">
+            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            Copyright &copy;
+            <script>
+              document.write(new Date().getFullYear());
+            </script>
+            All rights reserved | This template is made with
+            <i class="fa fa-heart-o" aria-hidden="true"></i> by
+            <a href="https://colorlib.com" target="_blank">Colorlib</a>
+            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+          </p>
+        </div>
+      </div>
+    </footer>
+
+	<script src="js/vendor/bootstrap.min.js"></script>
+    <script>
+      // Get the select element and payment buttons
+      const paymentOptions = document.getElementById('payment-options');
+      const cashOnDeliveryButton = document.getElementById('cashOnDeliveryButton');
+      const razorpayButton = document.getElementById('razorpayButton');
+      const walletButton = document.getElementById('walletButton');
+    
+      // Function to show/hide buttons based on the selected payment option
+      function handlePaymentOptionChange() {
+        const selectedOption = paymentOptions.value;
+        if (selectedOption === 'cash-on-delivery') {
+          cashOnDeliveryButton.classList.remove('hidden');
+          razorpayButton.classList.add('hidden');
+          walletButton.classList.add('hidden');
+        } else if (selectedOption === 'net-banking') {
+          cashOnDeliveryButton.classList.add('hidden');
+          razorpayButton.classList.remove('hidden');
+          walletButton.classList.add('hidden');
+        } else if (selectedOption === 'wallet') {
+          cashOnDeliveryButton.classList.add('hidden');
+          razorpayButton.classList.add('hidden');
+          walletButton.classList.remove('hidden');
+        }
+      }
+    
+      // Listen for changes to the selected payment option
+      paymentOptions.addEventListener('change', handlePaymentOptionChange);
+    
+      // Call the function once to set the initial state
+      handlePaymentOptionChange();
+    </script>
+    
+<script>
+  document.getElementById('walletPayment').addEventListener('click', function(event) {
+  event.preventDefault();
+console.log("Entered");
+  // Get the wallet balance and total price
+  const walletBalance = balance.getAttribute('data-walletbalance');
+  const totalPrice = price.getAttribute('data-totalprice');
+  // Convert the string values to numbers
+  const walletbalance = Number(walletBalance.replace(/[^\d.-]/g, ''));
+  const finalprice = Number(totalPrice.replace(/[^\d.-]/g, ''));
+  
+ // Get the error message element
+ const errorMessageElement = document.getElementById('walletErrorMessage');
+ console.log(typeof walletbalance, typeof finalprice);
+  // Check if the wallet balance is greater than or equal to the total price
+  if (walletbalance >= finalprice) {
+    // Submit the form
+    document.querySelector('form').submit();
+  } else {
+    // Show an error message
+    errorMessageElement.innerText = 'Your wallet does not have enough money.';
+      errorMessageElement.style.display = 'block';
+  }
+});
+
+</script>
+    
+    <script>
+      let orderId;
+      let orderprice = price.getAttribute('data-totalprice')
+      orderprice = Math.floor(Number(orderprice));
+      $(document).ready(function () {
+        var settings = {
+          url: "/create/orderId",
+          method: "POST",
+          timeout: 0,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: JSON.stringify({
+            amount: orderprice,
+          }),
+        };
+
+        //creates new orderId everytime
+        $.ajax(settings).done(function (response) {
+          orderId = response.orderId;
+          orderprice = response.orderprice; // Assign response.orderprice to orderprice
+          ordresignature = response.signature;
+          console.log(orderId);
+          $("#rzp-button1").show();
+        });
+      });
+      // console.log(orderprice);
+      document.getElementById("rzp-button1").onclick = function (e) {
+        var options = {
+          key: "rzp_test_BKgZJwO5Jn8JWR",
+          amount: orderprice * 100,
+          currency: "INR",
+          name: "E-CART",
+          description: "Online Payment",
+          image: "\img\logo.png",
+          order_id: orderId,
+          handler: function (response) {
+            // Create a form dynamically
+            var form = document.createElement("form");
+            form.method = "post";
+            form.action = "/placeOrder"; // Router
+
+            // Create an input element to hold the payment ID
+            var paymentIdInput = document.createElement("input");
+            paymentIdInput.type = "hidden";
+            paymentIdInput.name = "razorpay_payment_id";
+            paymentIdInput.value = response.razorpay_payment_id;
+
+            // Add the input element to the form
+            form.appendChild(paymentIdInput);
+
+            // Add hidden input fields for payment mode and address details
+            var paymentModeInput = document.createElement("input");
+            paymentModeInput.type = "hidden";
+            paymentModeInput.name = "paymentmode";
+            paymentModeInput.value =
+              document.getElementById("payment-options").value; // Assumes the payment mode is selected through a dropdown
+
+            form.appendChild(paymentModeInput);
+
+            var selectedAddressInput = document.querySelector(
+              'input[name="selectedAddress"]:checked'
+            );
+            if (selectedAddressInput) {
+              var addressIdInput = document.createElement("input");
+              addressIdInput.type = "hidden";
+              addressIdInput.name = "selectedAddress";
+              addressIdInput.value = selectedAddressInput.value;
+
+              form.appendChild(addressIdInput);
+            }
+
+            // Append the form to the body
+            document.body.appendChild(form);
+
+            // Submit the form
+            form.submit();
+          },
+        };
+
+        var rzp1 = new Razorpay(options);
+
+        rzp1.on("payment.failed", function (response) {
+          alert(response.error.code);
+          alert(response.error.description);
+          alert(response.error.source);
+          alert(response.error.step);
+          alert(response.error.reason);
+          alert(response.error.metadata.order_id);
+          alert(response.error.metadata.payment_id);
+        });
+
+        rzp1.open();
+        e.preventDefault();
+      };
+    </script>
+  
+<!-- Include SweetAlert2 CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const logoutButton = document.getElementById("logout-button");
+
+    if (logoutButton) {
+      logoutButton.addEventListener("click", function (e) {
+        e.preventDefault(); // Prevent the default link behavior
+
+        // Use SweetAlert2 for confirmation
+        Swal.fire({
+          title: "Are you sure?",
+          text: "Do you really want to logout?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonText: "Yes, logout",
+          cancelButtonText: "No, cancel"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // If the user confirms, redirect to the logout page
+            window.location.href = "/logout";
+          }
+        });
+      });
+    }
+  });
+</script>
+  </body>
+</html>

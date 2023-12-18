@@ -1,0 +1,81 @@
+<%-include('header')-%>
+<div class="row justify-content-center">
+  <div class="col-12 col-md-6 col-lg-4" style="min-width: 500px">
+    <div
+      class="card bg-white mb-5 mt-5 border-0"
+      style="box-shadow: 0 12px 15px rgba(0, 0, 0, 0.02)"
+    >
+      <div class="card-body p-5 text-center">
+        <h4>Two Step Authentication</h4>
+        <p>Your code was sent to you via email</p>
+        <div class="container">
+          <div class="col-md-12 mx-auto">
+            <% if (typeof message !== 'undefined') { %>
+            <div class="alert alert-success"><%= message %></div>
+            <% } %> <% if (typeof loginmessage !== 'undefined') { %>
+            <div class="alert alert-danger"><%= loginmessage %></div>
+            <% } %>
+          </div>
+        </div>
+        <form action="/otp" method="POST">
+          <div class="otp-field mb-4">
+            <input
+              type="number"
+              maxlength="1"
+              inputmode="numeric"
+              name="digit1"
+            />
+            <input
+              type="number"
+              maxlength="1"
+              inputmode="numeric"
+              name="digit2"
+            />
+            <input
+              type="number"
+              maxlength="1"
+              inputmode="numeric"
+              name="digit3"
+            />
+            <input
+              type="number"
+              maxlength="1"
+              inputmode="numeric"
+              name="digit4"
+            />
+          </div>
+  <button class="btn btn-primary mb-3" type="submit">Verify</button>
+        </form>
+        <div class="text-center">
+          <p id="timer"></p>
+          <a id="resendBtn" class="btn  btn-primary mb-3 disabled" href="/resendotp" onclick="resendOTP()" style="color: white;">Resend OTP</a>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  let timer;
+  let timeLeft = 60; // Time in seconds
+
+  function startTimer() {
+      timer = setInterval(function () {
+          document.getElementById('timer').innerHTML = 'Time left: ' + timeLeft + ' seconds';
+          timeLeft--;
+
+          if (timeLeft < 0) {
+              clearInterval(timer);
+              document.getElementById('timer').innerHTML = '';
+              document.getElementById('resendBtn').classList.remove('disabled');
+
+              // Add logic to destroy session when the timer runs out
+              // Example: window.location.href = '/logout';
+          }
+      }, 1000);
+  }
+
+  // Start the timer when the page loads
+  startTimer();
+</script>
+
+<%-include('footer')-%>

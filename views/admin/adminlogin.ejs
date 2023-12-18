@@ -1,0 +1,113 @@
+<%-include('header') -%>
+
+<div class="container">
+  <!-- Outer Row -->
+  <div class="row justify-content-center">
+    <div class="col-xl-10 col-lg-12 col-md-9">
+      <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+          <!-- Nested Row within Card Body -->
+          <div class="row">
+            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+            <div class="col-lg-6">
+              <div class="p-5">
+                <div class="text-center">
+                  <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                </div>
+                <div class="container">
+                  <div class="col-md-12 mx-auto">
+                    <% if (typeof message !== 'undefined') { %>
+                    <div class="alert alert-success text-center"> 
+                      <%= message %>
+                    </div>
+                    <% } %> <% if (typeof loginmessage !== 'undefined') { %>
+                    <div class="alert alert-danger text-center">
+                      <%= loginmessage %>
+                    </div>
+                    <% } %>
+                  </div>
+                </div>
+                <form class="user" action="/admin" method="post">
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      class="form-control form-control-user"
+                      id="exampleInputEmail"
+                      aria-describedby="emailHelp"
+                      name="username"
+                      placeholder="Enter Your Username..."
+                    />
+                  </div>
+                  <div class="form-group">
+                    <input
+                      type="password"
+                      class="form-control form-control-user"
+                      id="exampleInputPassword"
+                      name="password"
+                      placeholder="Password"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-user btn-block"
+                  >
+                    Login
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+ 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector(".user");
+
+    form.addEventListener("submit", function (event) {
+      const usernameInput = document.getElementById("exampleInputEmail");
+      const passwordInput = document.getElementById("exampleInputPassword");
+
+      // Remove existing error messages
+      removeErrorMessage(usernameInput);
+      removeErrorMessage(passwordInput);
+
+      if (!usernameInput.value.trim()) {
+        event.preventDefault(); // Prevent form submission
+        displayErrorMessage(usernameInput, "Please enter your username.");
+      }
+
+      if (!passwordInput.value.trim()) {
+        event.preventDefault(); // Prevent form submission
+        displayErrorMessage(passwordInput, "Please enter your password.");
+      }
+    });
+
+    function displayErrorMessage(inputElement, message) {
+      // Display error message
+      const errorMessage = document.createElement("p");
+      errorMessage.textContent = message;
+      errorMessage.style.color = "red";
+      errorMessage.classList.add("error-message");
+
+      // Insert error message after the input field
+      inputElement.insertAdjacentElement("afterend", errorMessage);
+    }
+
+    function removeErrorMessage(inputElement) {
+      // Remove existing error messages
+      const existingErrorMessage = inputElement.nextElementSibling;
+
+      if (existingErrorMessage && existingErrorMessage.classList.contains("error-message")) {
+        existingErrorMessage.remove();
+      }
+    }
+  });
+</script>
+
+<%-include('footer') -%>

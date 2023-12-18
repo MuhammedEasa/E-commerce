@@ -1,0 +1,54 @@
+<%-include('header') -%>
+<div class="card-body">
+  <h1 class="text-center text-primary">Add Category</h1>
+  <form action="/addcategory" method="POST">
+    <div class="mb-3 mt-4">
+      <label for="categoryname" class="form-label">Category Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="categoryname"
+        name="categoryname"
+      
+      />
+    </div>
+    <div class="text-center login-button mb-4">
+      <button type="submit" class="btn btn-primary w-100">Add</button>
+      <a href="/categorymanagement" class="btn btn-primary w-100 mt-2"
+        >Go Back</a
+      >
+    </div>
+  </form>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', function (event) {
+      let isValid = true;
+
+      // Check Category Name
+      const categoryName = document.getElementById('categoryname').value;
+      if (categoryName.trim() === '') {
+        displayError('Category Name is required', 'categoryname');
+        isValid = false;
+      }
+
+      if (!isValid) {
+        event.preventDefault(); // Prevent form submission if validation fails
+      }
+    });
+
+    function displayError(message, elementId) {
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'invalid-feedback';
+      errorDiv.innerHTML = message;
+
+      const element = document.getElementById(elementId);
+      element.classList.add('is-invalid');
+      element.parentNode.appendChild(errorDiv);
+    }
+  });
+</script>
+
+<%-include('footer') -%>

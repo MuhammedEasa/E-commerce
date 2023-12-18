@@ -1,0 +1,248 @@
+<%-include('header') -%>
+<!-- Page Wrapper -->
+<div id="wrapper">
+ <!-- Sidebar -->
+ <ul
+ class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+ id="accordionSidebar" 
+>
+ <!-- Sidebar - Brand -->
+ <a
+   class="sidebar-brand d-flex align-items-center justify-content-center"
+   href="#"
+ >
+   <div class="sidebar-brand-icon rotate-n-15">
+     <i class="fas fa-laugh-wink"></i>
+   </div>
+   <div class="sidebar-brand-text mx-3">Admin Panel</div>
+ </a>
+
+ <!-- Divider -->
+ <hr class="sidebar-divider my-0" />
+
+ <!-- Nav Item - Dashboard -->
+ <li class="nav-item ">
+   <a class="nav-link" href="/admindashboard">
+     <i class="fas fa-fw fa-tachometer-alt"></i>
+     <span>Dashboard</span></a
+   >
+ </li>
+
+ <!-- Divider -->
+ <hr class="sidebar-divider" />
+
+ <!-- Heading -->
+ <div class="sidebar-heading">Interface</div>
+
+ <!-- Nav Item - User Management -->
+ <li class="nav-item">
+   <a class="nav-link" href="/usermanagement">
+     <i class="fas fa-user"></i>
+     <span>User Management</span>
+   </a>
+ </li>
+
+ <!-- Nav Item - Category Management -->
+ <li class="nav-item">
+   <a class="nav-link" href="/categorymanagement">
+     <i class="fas fa-sitemap"></i>
+     <span>Category Management</span>
+   </a>
+ </li>
+
+ <!-- Nav Item - Product Management -->
+ <li class="nav-item">
+   <a class="nav-link" href="/productlisting">
+     <i class="fas fa-shopping-cart"></i>
+     <span>Product Management</span>
+   </a>
+ </li>
+
+ <!-- Nav Item - Order management -->
+ <li class="nav-item active">
+   <a class="nav-link" href="#">
+     <i class="fas fa-truck"></i>
+     <span>Order Management</span>
+   </a>
+ </li>
+ <!-- Nav Item - Coupen management -->
+ <li class="nav-item">
+   <a class="nav-link" href="/offerManagement">
+     <i class="fas fa-tags"></i>
+     <span>Offer Management</span>
+   </a>
+ </li>
+
+
+ <!-- Nav Item - Report -->
+ <li class="nav-item">
+   <a class="nav-link" href="/salesReport">
+     <i class="fas fa-chart-pie"></i>
+     <span>Sales Report</span>
+   </a>
+ </li>
+ <!-- Nav Item - LogOut -->
+ <li class="nav-item">
+   <a class="nav-link" href="/adminlogout">
+     <i class="fas fa-sign-out-alt"></i>
+     <span>Logout</span>
+   </a>
+ </li>
+</ul>
+<!-- End of Sidebar -->
+
+  <!-- Begin Page Content -->
+  <div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800 text-center">Order Management</h1>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Address</th> 
+                <th>Full Quantity</th> 
+                <th>Payment Method</th> 
+                <th>TotalPrice</th> 
+                <th>Products</th>
+                <th>Status</th>
+                <th>Status Action</th> 
+                <th> Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% orders.forEach((order, index) => { %>
+                  <tr>
+                      <td><%= index + 1 %></td>
+                      <td><%= generateUniqueID() %></td>
+                      <td><%= order.username %></td>
+                      <td>
+                          <%= order.address.address %>, <%= order.address.city %>, <%= order.address.state %>, <%= order.address.pincode %>
+                      </td>
+                      <td><%= order.totalQuantity %></td>
+                      <td><%= order.paymentMethod %></td>
+                      <td><%= order.totalPrice.toFixed(2) %></td>
+                      <td>
+                          <% order.products.forEach((product) => { %>
+                              <p><%= product.product %> - Quantity: <%= product.quantity %> - Price: <%= product.price %></p>
+                              <% }); %>
+                      </td>
+                      <td>
+                        <% order.products.forEach((product, index) => { %>
+                            <%= product.status %><%= index < order.products.length - 1 ? '' : '' %>
+                        <% }); %>
+                    </td>                                      
+                      <% order.products.forEach((product) => { %>
+                      <% if (product.status !== 'Cancelled' && product.status !== 'Delivered' && product.status !== 'Returned') { %>
+                          <% if (product.status === 'Return Requested') { %>
+                              <td>
+                                
+                                <button class="btn btn-success" onclick="acceptCancelRequest('<%= order.userId %>','<%= product._id %>','<%= order._id %>')">Accept</button>
+                                <button class="btn btn-danger" onclick="rejectCancelRequest('<%= order.userId %>','<%= product._id %>','<%= order._id %>')">Cancel</button>
+                                
+                              </td>
+                          <% } else { %>
+                              <form action="/updateStatus/<%= order.userId %>/<%= product._id %>" method="post">
+                                  <td>
+                                      <select class="form-select" name="newStatus">
+                                          <option value="Pending" <%= product.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                                          <option value="Processing" <%= product.status === 'Processing' ? 'selected' : '' %>>Processing</option>
+                                          <option value="Shipped" <%= product.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                                          <option value="Delivered" <%= product.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                                          <option value="Cancelled" <%= product.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                      </select>
+                                  </td>
+                                  <td>
+                                      <button class="btn btn-success" type="submit">Update</button>
+                                  </td>
+                              </form>
+                          <% } %>                  
+                      <% } %>
+                      <% }); %>
+                  </tr>
+              <% }); %>
+          </tbody>
+          
+          </table>
+             <!-- Pagination Starting -->
+<div class="pagination justify-content-center mt-2 mb-2">
+  <% if (currentPage > 1) { %>
+    <a href="?page=<%= currentPage - 1 %>" class="prev-arrow" aria-label="Previous">
+      <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+    </a>
+  <% } %>
+  <% for (let i = 1; i <= totalPages; i++) { %>
+    <a href="?page=<%= i %>" class="<%= i === currentPage ? 'active page-link' : 'page-link' %>">
+      <%= i %>
+    </a>
+  <% } %>
+  <% if (currentPage < totalPages) { %>
+    <a href="?page=<%= currentPage + 1 %>" class="next-arrow" aria-label="Next">
+      <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+    </a>
+  <% } %>
+</div>
+<!-- Pagination Ending -->
+        </div>
+       </div>
+  </div>
+  <!-- /.container-fluid -->
+</div>
+</div>
+<!-- End of Main Content -->
+
+<!-- Footer -->
+<footer class="sticky-footer">
+  <div class="container my-auto">
+    <div class="copyright text-center my-auto">
+      <span>Copyright &copy; Your Website 2020</span>
+    </div>
+  </div>
+</footer>
+
+
+
+<script>
+  function acceptCancelRequest(userId, productId, orderId) {
+      fetch(`/acceptCancelRequest/${userId}/${productId}/${orderId}`, {
+          method: 'POST',
+      })
+      .then(response => {
+          if (response.ok) {
+              console.log('Cancel request accepted successfully');
+              window.location.href = '/orderManagement';
+          } else {
+              console.error('Failed to accept cancel request');
+          }
+      })
+      .catch(error => {
+          console.error('Error accepting cancel request:', error);
+      });
+  }
+
+  function rejectCancelRequest(userId, productId, orderId) {
+      fetch(`/rejectCancelRequest/${userId}/${productId}/${orderId}`, {
+          method: 'POST',
+      })
+      .then(response => {
+          if (response.ok) {
+              console.log('Cancel request rejected successfully');
+              window.location.href = '/orderManagement';
+          } else {
+              console.error('Failed to reject cancel request');
+          }
+      })
+      .catch(error => {
+          console.error('Error rejecting cancel request:', error);
+      });
+  }
+</script>
+
+
+<!-- End of Footer -->
+<%-include('footer') -%>

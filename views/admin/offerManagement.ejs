@@ -1,0 +1,202 @@
+<%-include('header') -%>
+<header>
+  
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: linear-gradient(45deg, #49a09d, #5f2c82);
+      font-family: sans-serif;
+      font-weight: 100;
+    }
+  
+    /* body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    } */
+  
+    table {
+      width: 100%; /* Increase table size to 100% */
+      border-collapse: collapse;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      margin-top: 3rem;
+    }
+  
+    th, td {
+      padding: 15px;
+      background-color: rgba(255,255,255,0.2);
+      color: #fff;
+      text-align: center; /* Align text to center */
+    }
+  
+    th {
+      white-space: nowrap; /* Prevent th text from wrapping to two lines */
+    }
+  
+    thead th {
+      background-color: #55608f;
+    }
+  
+    tbody tr:hover {
+      background-color: rgba(255,255,255,0.3);
+    }
+  
+    tbody td {
+      position: relative;
+    }
+  
+    tbody td:hover:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -9999px;
+      bottom: -9999px;
+      background-color: rgba(255,255,255,0.2);
+      z-index: -1;
+    }
+      /* Responsive Styles */
+  @media (max-width: 768px) {
+    table {
+      font-size: 12px; 
+    }
+  }
+  </style>
+  
+</header>
+<!-- Page Wrapper -->
+<div id="wrapper">
+  <!-- Sidebar -->
+  <ul
+    class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+    id="accordionSidebar"
+  >
+    <!-- Sidebar - Brand -->
+    <a
+      class="sidebar-brand d-flex align-items-center justify-content-center"
+      href="#"
+    >
+      <div class="sidebar-brand-icon rotate-n-15">
+        <i class="fas fa-laugh-wink"></i>
+      </div>
+      <div class="sidebar-brand-text mx-3">Admin Panel</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0" />
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item ">
+      <a class="nav-link" href="#">
+        <i class="fas fa-fw fa-tachometer-alt"></i>
+        <span>Dashboard</span></a
+      >
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider" />
+
+    <!-- Heading -->
+    <div class="sidebar-heading">Interface</div>
+
+    <!-- Nav Item - User Management -->
+    <li class="nav-item">
+      <a class="nav-link" href="/usermanagement">
+        <i class="fas fa-user"></i>
+        <span>User Management</span>
+      </a>
+    </li>
+
+    <!-- Nav Item - Category Management -->
+
+    <li class="nav-item">
+      <a class="nav-link" href="/categorymanagement">
+        <i class="fas fa-sitemap"></i>
+        <span>Category Management</span>
+      </a>
+    </li>
+
+    <!-- Nav Item - Product Management -->
+    <li class="nav-item">
+      <a class="nav-link" href="/productlisting">
+        <i class="fas fa-shopping-cart"></i>
+        <span>Product Management</span>
+      </a>
+    </li>
+
+    <!-- Nav Item - Order management -->
+    <li class="nav-item">
+      <a class="nav-link" href="/orderManagement">
+        <i class="fas fa-truck"></i>
+        <span>Order Management</span>
+      </a>
+    </li>
+    <!-- Nav Item - Coupen management -->
+    <li class="nav-item active">
+      <a class="nav-link" href="/offerManagement">
+        <i class="fas fa-tags"></i>
+        <span>Offer Management</span>
+      </a>
+    </li>
+
+   
+    <!-- Nav Item - Report -->
+    <li class="nav-item">
+      <a class="nav-link" href="/salesReport">
+        <i class="fas fa-chart-pie"></i>
+        <span>Sales Report</span>
+      </a>
+    </li>
+    <!-- Nav Item - LogOut -->
+    <li class="nav-item">
+      <a class="nav-link" href="/adminlogout">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </a>
+    </li>
+  </ul>
+  <!-- End of Sidebar -->
+
+
+  <div class="container">
+    <!-- Add Offer Button -->
+    <a href="/addOffer" class="btn btn-primary mb-3">Add Offer</a>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Type</th>
+          <th>Code</th>
+          <th>Discount</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Is Active</th>
+          <th>Applicable Products</th>
+          <th>Applicable Categories</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% offers.forEach((offer, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= offer.type %></td>
+            <td><%= offer.code %></td>
+            <td><%= offer.discount%>%</td>
+            <td><%= new Date(offer.startDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></td>
+            <td><%= new Date(offer.endDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></td>
+            <td><%= offer.isActive %></td>
+            <td><%= offer.applicableProducts.join(', ') %></td>
+            <td><%= offer.applicableCategories.join(', ') %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+<!-- table Ending -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<%-include('footer') -%>

@@ -1,0 +1,291 @@
+<%-include('header') -%>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <script src="/node_modules/cropperjs/dist/cropper.min.css"></script>
+
+  <style>
+    label{
+     color: white; 
+    }
+    #canvas {
+  height: 100px;
+  width: 100px;
+  background-color: #ffffff;
+  cursor: default;
+  border: 1px solid black;
+}
+.cropper-container {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+  </style>
+</head>
+
+
+
+  <!-- Start of Form -->
+  <!-- Form -->
+  <div
+    class="col-9 d-flex justify-content-center align-items-center"
+    style="height: 100vh;"
+  >
+    <form
+      action="/updateproduct/<%= product._id %>"
+      method="post"
+      enctype="multipart/form-data"
+      class="needs-validation"
+      novalidate
+    >
+      <div class="form-group">
+        <label for="Productname">Product Name:</label>
+        <input
+          type="text"
+          id="Productname"
+          name="Productname"
+          class="form-control"
+          value="<%= product.productname %>"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="Category">Category</label>
+        <select class="form-select" id="Category" name="Category" required>
+            <option value="<%= product.category %>"><%= product.category %></option>
+            <% if(categories.length> 0) { %>
+                <% categories.forEach( categorie=> { %>
+                    <option value="<%= categorie.category %>"><%= categorie.category %></option>
+                    <% }); %>
+                        <% } %>
+            </select>
+        </div>
+
+
+
+
+      <div class="form-group">
+        <label for="Price">Price:</label>
+        <input
+          type="number"
+          id="Price"
+          name="Price"
+          class="form-control"
+          value="<%= product.price %>"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="Rating">Rating:</label>
+        <input
+          type="number"
+          id="Rating"
+          name="Rating"
+          class="form-control"
+          value="<%= product.rating %>"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="Model">Model:</label>
+        <input
+          type="text"
+          id="Model"
+          name="Model"
+          class="form-control"
+          value="<%= product.model %>"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="Description">Description:</label>
+        <textarea
+          id="Description"
+          name="Description"
+          class="form-control"
+          rows="3"
+          required
+        >
+<%= product.description %></textarea
+        >
+      </div>
+      <div class="form-group">
+        <label for="Stock">Stock</label>
+        <input
+          type="number"
+          id="Stock"
+          name="Stock"
+          class="form-control"
+          value="<%= product.stock %>"
+          required
+        />
+       
+      </div>
+<div class="form-group">
+    <label for="image">Image URL:</label>
+    <input
+        multiple
+        type="file"
+        id="img"
+        name="img"
+        class="form-control-file"
+        required
+        style="color: white;"
+    />
+    <div>
+      
+    <br>
+      <% if (product.image && product.image.length > 0) { %>
+          <p style="color: white;">Previous Image(s):</p>
+          <% product.image.forEach((img, index) => { %>
+              <img src="<%= img %>" alt="Previous Image" style="max-width: 100px; margin-right: 10px;">
+              <button class="remove-image btn btn-danger" data-image="<%= index %>" data-id="<%= product._id %>" type="button">Remove</button>
+          <% }); %>
+      <% } %>
+  </div>
+
+</div>
+<br>
+      <div class="mb-4">
+        <label for="isListed" class="form-label">IsListed</label>
+        <select class="form-select" id="isListed" name="isListed" required>
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+    </div>
+      <div class="form-group">
+        <input type="submit" value="Update" class="btn btn-primary" />
+      </div>
+    </form>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="/node_modules/cropperjs/dist/cropper.min.js"></script>
+
+
+<!-- remove Image -->
+<script>
+  $(document).ready(function () {
+      // Handle the click event for the "Remove" button
+      $('.remove-image').on('click', function () {
+          var button = $(this); // Store reference to the button
+
+          var productId = button.data('id');
+          var imageIndex = button.data('image');
+
+          // Make an AJAX request to remove the image from the database
+          $.ajax({
+              url: '/remove-image', // Replace with the actual endpoint on your server
+              method: 'POST', // Use the appropriate HTTP method
+              data: {
+                  productId: productId,
+                  imageIndex: imageIndex
+              },
+              success: function (response) {
+                  // Handle the success response (e.g., update the UI)
+                  console.log(response);
+                  // You may want to remove the image from the UI as well
+                  button.prev('img').remove();
+                  button.remove();
+              },
+              error: function (error) {
+                  // Handle the error response
+                  console.error(error);
+              }
+          });
+      });
+  });
+</script>
+
+ <!-- Validation -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', function (event) {
+      let isValid = true;
+
+      // Check Product Name
+      const productName = document.getElementById('Productname').value;
+      if (productName.trim() === '') {
+        displayError('Product Name is required', 'Productname');
+        isValid = false;
+      }
+
+      // Check Category
+      const category = document.getElementById('Category').value;
+      if (category.trim() === '') {
+        displayError('Category is required', 'Category');
+        isValid = false;
+      }
+
+      // Check Price
+      const price = document.getElementById('Price').value;
+      if (price.trim() === '' || isNaN(price)) {
+        displayError('Enter a valid price', 'Price');
+        isValid = false;
+      }
+
+      // Check Rating
+      const rating = document.getElementById('Rating').value;
+      if (rating.trim() === '' || isNaN(rating) || rating < 0 || rating > 5) {
+        displayError('Enter a valid rating between 0 and 5', 'Rating');
+        isValid = false;
+      }
+
+      // Check Model
+      const model = document.getElementById('Model').value;
+      if (model.trim() === '') {
+        displayError('Model is required', 'Model');
+        isValid = false;
+      }
+
+      // Check Description
+      const description = document.getElementById('Description').value;
+      if (description.trim() === '') {
+        displayError('Description is required', 'Description');
+        isValid = false;
+      }
+
+       // Check Stock
+       const stock = document.getElementById('Stock').value;
+      if (stock.trim() === '' || isNaN(stock) || stock < 0) {
+        displayError('Enter a valid stock quantity', 'Stock');
+        isValid = false;
+      }
+
+      // Check Image URL
+      // const image = document.getElementById('image').value;
+      // if (image.trim() === '') {
+      //   displayError('Image URL is required', 'image');
+      //   isValid = false;
+      // }
+
+      // Check Is Listed
+      const isListed = document.getElementById('isListed').value;
+      if (isListed.trim() === '') {
+        displayError('IsListed is required', 'isListed');
+        isValid = false;
+      }
+
+      if (!isValid) {
+        event.preventDefault(); // Prevent form submission if validation fails
+      }
+    });
+
+    function displayError(message, elementId) {
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'invalid-feedback';
+      errorDiv.innerHTML = message;
+
+      const element = document.getElementById(elementId);
+      element.classList.add('is-invalid');
+      element.parentNode.appendChild(errorDiv);
+    }
+  });
+</script>
+
+
+<%-include('footer') -%>

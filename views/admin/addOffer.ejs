@@ -1,0 +1,150 @@
+<%- include('header') -%>
+
+<header>
+    <style>
+       
+        /* Apply a reset to remove default margin and padding */
+body, h1, h2, p, label, input, button {
+    margin: 10;
+    padding: 10;
+}
+
+/* Apply a basic styling to the body */
+body {
+    font-family: Arial, sans-serif;
+   
+}
+
+/* Style the wrapper to center the content */
+#wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin-top: 10rem;
+}
+
+/* Style the container to add some spacing and background color */
+.container {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the form elements */
+form {
+    display: grid;
+    gap: 15px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Style the checkbox */
+input[type="checkbox"] {
+    width: auto;
+}
+
+/* Style the button */
+button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</header>
+
+<div id="wrapper">
+    <div class="container">
+        <h2>Add Offer</h2>
+        <form id="addOfferForm" action="/addOffer" method="post">
+            <div id="error-message" style="color: red; margin-bottom: 10px;"></div>
+            <label for="type">Type:</label>
+            <input type="text" id="type" name="type" >
+
+            <label for="code">Code:</label>
+            <input type="text" id="code" name="code" >
+
+            <label for="discount">Discount:</label>
+            <input type="number" id="discount" name="discount" >
+
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate" >
+
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" name="endDate" >
+
+            <label for="isActive">Is Active:</label>
+            <input style="align-items:flex-start ;" type="checkbox" id="isActive" name="isActive" checked>
+
+            
+            <div>
+                <% if(productdb.length > 0) { %>
+                    <% productdb.forEach(product => { %>
+                        <input type="checkbox" id="product_<%= product.productname %>" name="selectedProducts[]" value="<%= product.productname %>">
+                        <label for="product_<%= product.productname %>"><%= product.productname %></label><br>
+                    <% }); %>
+                <% } %>
+                
+            </div>
+
+            
+            <label for="applicableCategories">Applicable Categories:</label>
+            <div>
+                <% if(categories.length > 0) { %>
+                    <% categories.forEach(category => { %>
+                        <input type="checkbox" id="category_<%= category.category %>" name="selectedCategories[]" value="<%= category.category %>">
+                        <label for="category_<%= category.category %>"><%= category.category %></label><br>
+                    <% }); %>
+                <% } %>
+            </div>
+            <button type="submit" onclick="submitForm()">Add Offer</button>
+        </form>
+    </div>
+</div>
+<script>
+    async function submitForm(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const form = document.getElementById('addOfferForm');
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch('/addOffer', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                // Redirect to offerManagement or handle success as needed
+                window.location.href = '/offerManagement';
+            } else {
+                const responseData = await response.json();
+                // Display the error message on the client side
+                document.getElementById('error-message').textContent = responseData.error || 'Internal Server Error';
+            }
+        } catch (error) {
+            console.error(error);
+            document.getElementById('error-message').textContent = 'Internal Server Error';
+        }
+    }
+</script>
+
+<%- include('footer') -%>

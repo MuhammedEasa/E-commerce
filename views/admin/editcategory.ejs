@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Category</title>
+
+  <!-- Bootstrap CSS CDN link -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <!-- Custom Styles -->
+  <style>
+    body {
+      background-color: #343a40; /* Dark background color */
+      color: #fff; /* Text color */
+    }
+
+    .card-body {
+      background-color: #343a40; /* Dark background color for the card body */
+      color: #fff; /* Text color for the card body */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card-body">
+    <h1 class="text-center text-primary">Edit Category</h1>
+    <form action="/updatecategory/<%= category._id %>" method="POST">
+      <div class="mb-3 mt-4">
+        <label for="categoryName" class="form-label">Category Name</label>
+        <input type="text" class="form-control" id="categoryName" name="categoryName" value="<%= category.category %>">
+      </div>
+      <div class="text-center login-button mb-4">
+        <button type="submit" class="btn btn-primary w-100">Update</button>
+        <a href="/categorymanagement" class="btn btn-primary w-100 mt-2">Go Back</a>
+      </div>
+    </form>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.querySelector('form');
+  
+      form.addEventListener('submit', function (event) {
+        let isValid = true;
+  
+        // Check Category Name
+        const categoryName = document.getElementById('categoryName').value;
+        if (categoryName.trim() === '') {
+          displayError('Category Name is required', 'categoryName');
+          isValid = false;
+        }
+  
+        if (!isValid) {
+          event.preventDefault(); // Prevent form submission if validation fails
+        }
+      });
+  
+      function displayError(message, elementId) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'invalid-feedback';
+        errorDiv.innerHTML = message;
+  
+        const element = document.getElementById(elementId);
+        element.classList.add('is-invalid');
+        element.parentNode.appendChild(errorDiv);
+      }
+    });
+  </script>
+  
+
+
+  <!-- Bootstrap JS and Popper.js CDN links (required for Bootstrap components) -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,305 @@
+<%-include('header') -%>
+
+<head>
+
+    <title>salesReport</title>
+
+<style>
+    
+h1{
+  font-size: 30px;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 15px;
+}
+table{
+  width:100%;
+  table-layout: fixed;
+
+}
+.tbl-header{
+  background-color: rgba(255,255,255,0.3);
+ }
+.tbl-content{
+  height:500px;
+  overflow-x:auto;
+  margin-top: 0px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+th{
+  padding: 20px 15px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 12px;
+  color: #fff;
+  text-transform: uppercase;
+}
+td{
+  padding: 15px;
+  text-align: center;
+  vertical-align:middle;
+  font-weight: 300;
+  font-size: 12px;
+  color: #fff;
+  border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+
+
+/* demo styles */
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
+body{
+  background: -webkit-linear-gradient(left, #2851c2, #25b7c4);
+  background: linear-gradient(to right, #2851c2, #25b7c4);
+  font-family: 'Roboto', sans-serif;
+}
+section{
+  margin: 50px;
+}
+
+
+/* follow me template */
+.made-with-love {
+  margin-top: 40px;
+  padding: 10px;
+  clear: left;
+  text-align: center;
+  font-size: 10px;
+  font-family: arial;
+  color: #fff;
+}
+.made-with-love i {
+  font-style: normal;
+  color: #F50057;
+  font-size: 14px;
+  position: relative;
+  top: 2px;
+}
+.made-with-love a {
+  color: #fff;
+  text-decoration: none;
+}
+.made-with-love a:hover {
+  text-decoration: underline;
+}
+
+
+/* for custom scrollbar for webkit browser*/
+
+::-webkit-scrollbar {
+    width: 6px;
+} 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+} 
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+}
+.form-control.search-input {
+    width: 200px; 
+    margin-left: auto ;
+    margin-bottom: 10px;
+  }
+  .form-control.search-input:focus {
+    outline: none;
+    border-color: #007bff; 
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); 
+  }
+</style>
+</head>
+<!-- Page Wrapper -->
+<div id="wrapper">
+  <!-- Sidebar -->
+  <ul
+    class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+    id="accordionSidebar" 
+  >
+    <!-- Sidebar - Brand -->
+    <a
+      class="sidebar-brand d-flex align-items-center justify-content-center"
+      href="#"
+    >
+      <div class="sidebar-brand-icon rotate-n-15">
+        <i class="fas fa-laugh-wink"></i>
+      </div>
+      <div class="sidebar-brand-text mx-3">Admin Panel</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0" />
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item ">
+      <a class="nav-link" href="/admindashboard">
+        <i class="fas fa-fw fa-tachometer-alt"></i>
+        <span>Dashboard</span></a
+      >
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider" />
+
+    <!-- Heading -->
+    <div class="sidebar-heading">Interface</div>
+
+    <!-- Nav Item - User Management -->
+    <li class="nav-item">
+      <a class="nav-link" href="/usermanagement">
+        <i class="fas fa-user"></i>
+        <span>User Management</span>
+      </a>
+    </li>
+
+    <!-- Nav Item - Category Management -->
+    <li class="nav-item">
+      <a class="nav-link" href="/categorymanagement">
+        <i class="fas fa-sitemap"></i>
+        <span>Category Management</span>
+      </a>
+    </li>
+
+    <!-- Nav Item - Product Management -->
+    <li class="nav-item">
+      <a class="nav-link" href="/productlisting">
+        <i class="fas fa-shopping-cart"></i>
+        <span>Product Management</span>
+      </a>
+    </li>
+
+    <!-- Nav Item - Order management -->
+    <li class="nav-item ">
+      <a class="nav-link" href="/orderManagement">
+        <i class="fas fa-truck"></i>
+        <span>Order Management</span>
+      </a>
+    </li>
+    <!-- Nav Item - Coupen management -->
+    <li class="nav-item">
+      <a class="nav-link" href="/offerManagement">
+        <i class="fas fa-tags"></i>
+        <span>Offer Management</span>
+      </a>
+    </li>
+
+   
+    <!-- Nav Item - Report -->
+    <li class="nav-item active">
+      <a class="nav-link" href="#">
+        <i class="fas fa-chart-pie"></i>
+        <span>Sales Report</span>
+      </a>
+    </li>
+    <!-- Nav Item - LogOut -->
+    <li class="nav-item">
+      <a class="nav-link" href="/adminlogout">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </a>
+    </li>
+  </ul>
+  <!-- End of Sidebar -->
+
+    <section>
+        <!--for wrap-->
+        <h1>SalesReport</h1>
+        <input
+    type="text"
+    class="form-control ml-2 search-input"
+    id="search"
+    name="search"
+    placeholder="Search Orders by Name"
+    oninput="searchOrder()"
+  />
+        <div class="tbl-header">
+          <table cellpadding="0" cellspacing="0" border="0">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>User ID</th>
+                <th>User Name</th>
+                <th>Total Quantity</th>
+                <th>Total Price</th>
+                <th>Order Details</th>
+                <th>Payment Method</th>
+                <th>Date</th>
+                <th>Status</th>
+                
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="tbl-content">
+          <table cellpadding="0" cellspacing="0" border="0">
+            <tbody id="orderTableBody">
+                <% orders.forEach((order, index) => { %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td> <%= generateUniqueID() %></td>
+                <td> <%= order.username %> </td>
+                <td><%= order.totalQuantity %></td>
+                <td>₹<%= order.totalPrice.toFixed(2) %></td>
+                <td><% order.products.forEach((product) => { %>
+                    <p><%= product.product %> - Quantity: <%= product.quantity %> - Price: <%= product.price %></p>
+                  
+                  <% }); %></td>
+                
+                <td><%= order.paymentMethod %></td>
+                <td><%=  new Date(order.orderDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) %></td>
+                <td><%= order.products[0].status %></td>
+               
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+</div>
+      <script>
+        $(window).on("load resize ", function() {
+  var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width();
+  $('.tbl-header').css({'padding-right':scrollWidth});
+}).resize();
+ 
+    function searchOrder() {
+      const searchInput = document.getElementById('search').value;
+  
+      // Make an AJAX request to your server with the search query
+      fetch(`/search?search=${searchInput}`)
+        .then(response => response.json())
+        .then(data => {
+          // Update the table with the received data
+          const orderTableBody = document.getElementById('orderTableBody');
+  
+          orderTableBody.innerHTML = ''; // Clear the existing table data
+  
+          data.forEach((order,index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${index + 1}</td>
+              <td>${order.products[0]._id}</td>
+              <td>${order.username}</td>
+              <td>${order.totalQuantity}</td>
+              <td>
+                ${order.products
+                  .map(
+                    product =>
+                      `<p>${product.product} - Quantity: ${product.quantity} - Price: ${product.price}</p>`
+                  )
+                  .join('')}
+              </td>
+              <td>${order.paymentMethod}</td>
+              <td>${order.orderDate}</td>
+              <td>${order.products[0].status}</td>
+            `;
+            orderTableBody.appendChild(row);
+          });
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  </script>
+
+<%-include('footer') -%>
