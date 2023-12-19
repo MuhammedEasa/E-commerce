@@ -107,21 +107,20 @@
                   </div>
                 </div>
               </div>
-              <% if(products.length> 0) { %>
-                 <% products.forEach( (product, index)=> { %> 
-                  <% if(product.isListed === true && index === 0 ){ %>
-              <div class="col-lg-7">
-                <div class="banner-img">
-                  <img
-                    class="img-fluid"
-                    src="<%=product.image[0] %>"
-                    alt="<%= product.productname %>"
-                  />
-                </div>
-              </div>
-              <% }; %> 
-              <% }); %>
-               <% } %>
+                <% products.forEach((product) => { %>
+                  <% if(product.isListed === true && product.productname === "Jordan Retro 4") { %>
+                    <div class="col-lg-7">
+                      <div class="banner-img">
+                        <img
+                          class="img-fluid"
+                          src="<%=product.image[0] %>"
+                          alt="<%= product.productname %>"
+                        />
+                      </div>
+                    </div>
+                  <% }; %> 
+                <% }); %>
+              
             </div>
           <!-- single-slide -->
           <div class="row single-slide align-items-center d-flex">
@@ -144,21 +143,20 @@
               </div>
             </div>
 
-            <% if(products.length> 3) { %> 
-              <% products.forEach( (product, index)=> { %> 
-                <% if(product.isListed === true && index === 3 ){ %>
-            <div class="col-lg-7">
-              <div class="banner-img">
-                <img
-                  class="img-fluid"
-                  src="<%=product.image[0] %>"
-                  alt="<%= product.product %>"
-                />
-              </div>
-            </div>
-            <% }; %> 
-            <% }); %> 
-            <% } %>
+            <% products.forEach((product) => { %>
+              <% if (product.isListed === true && product.productname === "Jordan Retro 6") { %>
+                <div class="col-lg-7">
+                  <div class="banner-img">
+                    <img
+                      class="img-fluid"
+                      src="<%=product.image[0] %>"
+                      alt="<%= product.product %>"
+                    />
+                  </div>
+                </div>
+              <% }; %> 
+            <% }); %>
+            
           </div>
         
         </div>
