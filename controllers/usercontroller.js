@@ -252,7 +252,7 @@ exports.otpPostRouter = async (req, res) => {
       isOtpVerified: true,
       otp: null, // Set OTP to null after verification
       referralCode: userdetails.referralCode,
-      wallet: userdetails.wallet, // Assuming wallet is a property of userdetails
+      wallet: userdetails.wallet, 
     });
 
     const walletHistory = new wallet({
@@ -670,7 +670,7 @@ exports.addtoWishlist = async (req, res) => {
 
   if (existingProduct) {
     console.log("entered in existing");
-    res.redirect(`/productdetails/${productId}`);
+    res.redirect("/wishlist");
   } else {
     try {
       const newWishlist = await wishlistDb.create({
@@ -683,7 +683,7 @@ exports.addtoWishlist = async (req, res) => {
       });
 
       console.log('Wishlist item saved:', newWishlist);
-      res.redirect(`/productdetails/${productId}`);
+      res.redirect("/wishlist");
     } catch (error) {
       console.error('Error saving wishlist item:', error);
       // Handle the error appropriately, you may want to send an error response or redirect to an error page
@@ -762,7 +762,6 @@ exports.editprofilepost = async (req, res) => {
     let userId = user.user_id;
     let userName = user.username;
     const newName = req.body.name;
-    const newEmail = req.body.email;
 
     let newProfilePic;
 
@@ -784,7 +783,6 @@ exports.editprofilepost = async (req, res) => {
       {
         $set: {
           username: newName,
-          email: newEmail,
         },
       },
       { upsert: true }

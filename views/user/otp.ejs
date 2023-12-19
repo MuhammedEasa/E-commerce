@@ -19,30 +19,11 @@
         </div>
         <form action="/otp" method="POST">
           <div class="otp-field mb-4">
-            <input
-              type="number"
-              maxlength="1"
-              inputmode="numeric"
-              name="digit1"
-            />
-            <input
-              type="number"
-              maxlength="1"
-              inputmode="numeric"
-              name="digit2"
-            />
-            <input
-              type="number"
-              maxlength="1"
-              inputmode="numeric"
-              name="digit3"
-            />
-            <input
-              type="number"
-              maxlength="1"
-              inputmode="numeric"
-              name="digit4"
-            />
+            <input type="number" maxlength="1" inputmode="numeric" name="digit1" oninput="moveToNextOrPreviousInput(this, 'digit2', 'digit1')" />
+            <input type="number" maxlength="1" inputmode="numeric" name="digit2" oninput="moveToNextOrPreviousInput(this, 'digit3', 'digit1')" />
+            <input type="number" maxlength="1" inputmode="numeric" name="digit3" oninput="moveToNextOrPreviousInput(this, 'digit4', 'digit2')" />
+            <input type="number" maxlength="1" inputmode="numeric" name="digit4" oninput="moveToNextOrPreviousInput(this, '', 'digit3')" />
+    
           </div>
   <button class="btn btn-primary mb-3" type="submit">Verify</button>
         </form>
@@ -54,6 +35,17 @@
     </div>
   </div>
 </div>
+<script>
+  function moveToNextOrPreviousInput(currentInput, nextInputName, previousInputName) {
+      if (currentInput.value.length === currentInput.maxLength) {
+          if (nextInputName !== '') {
+              document.getElementsByName(nextInputName)[0].focus();
+          }
+      } else if (currentInput.value.length === 0 && previousInputName !== '') {
+          document.getElementsByName(previousInputName)[0].focus();
+      }
+  }
+</script>
 <script>
   let timer;
   let timeLeft = 60; // Time in seconds

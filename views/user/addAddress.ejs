@@ -283,7 +283,72 @@ body{background-color:#222222}.card{border:none}.image{position:relative}.image 
         </div>
       </div>
     </footer>
-    
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          const form = document.querySelector('form');
+  
+          form.addEventListener('submit', function (event) {
+              let valid = true;
+  
+              // Validation for First Name
+              const firstName = form.querySelector('[name="firstname"]');
+              if (firstName.value.trim() === '') {
+                  displayError(firstName, 'Please enter your First Name.');
+                  valid = false;
+              }
+  
+              // Validation for Last Name
+              const lastName = form.querySelector('[name="lastname"]');
+              if (lastName.value.trim() === '') {
+                  displayError(lastName, 'Please enter your Last Name.');
+                  valid = false;
+              }
+  
+              // Validation for Address
+              const address = form.querySelector('[name="address"]');
+              if (address.value.trim() === '') {
+                  displayError(address, 'Please enter your Address.');
+                  valid = false;
+              }
+  
+              // Validation for City
+              const city = form.querySelector('[name="city"]');
+              if (city.value.trim() === '') {
+                  displayError(city, 'Please enter your City.');
+                  valid = false;
+              }
+  
+              // Validation for State
+              const state = form.querySelector('[name="state"]');
+              if (state.value.trim() === '') {
+                  displayError(state, 'Please enter your State.');
+                  valid = false;
+              }
+  
+              // Validation for Pincode
+              const pincode = form.querySelector('[name="pincode"]');
+              if (pincode.value.trim() === '' || pincode.value.length !== 6 || pincode.value < 0) {
+                  displayError(pincode, 'Please enter a valid 6-digit Pincode.');
+                  valid = false;
+              }
+  
+              if (!valid) {
+                  event.preventDefault(); // Prevent form submission if validation fails
+              }
+          });
+  
+          function displayError(inputElement, errorMessage) {
+              const errorDiv = document.createElement('div');
+              errorDiv.className = 'error-message';
+              errorDiv.textContent = errorMessage;
+              errorDiv.style.color = 'red';
+              const parentDiv = inputElement.parentNode;
+              parentDiv.appendChild(errorDiv);
+          }
+      });
+  </script>
+  
+  
 <!-- Include SweetAlert2 CSS and JS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

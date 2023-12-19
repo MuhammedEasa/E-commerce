@@ -103,7 +103,7 @@
                     <a class="add-btn" href=""
                       ><span class="lnr lnr-cross"></span
                     ></a>
-                    <span class="add-text text-uppercase">Add to Bag</span>
+                    <span class="add-text text-uppercase" style="color: #f0f0f0 !important">Add to Bag</span>
                   </div>
                 </div>
               </div>
@@ -343,19 +343,19 @@
                             </div>
                             <div class="prd-bottom">
                                 <!-- some code here -->
-                                <a href="" class="social-info">
+                                <a href="/addtocart/<%= product._id %>/<%= userId %>" class="social-info">
                                 <span class="ti-bag"></span>
                                 <p class="hover-text">add to bag</p>
                             </a>
-                            <a href="" class="social-info">
+                            <a href="/addtoWishlist/<%= product._id %>" class="social-info">
                                 <span class="lnr lnr-heart"></span>
                                 <p class="hover-text">Wishlist</p>
                             </a>
-                            <a href="" class="social-info">
+                            <!-- <a href="" class="social-info">
                                 <span class="lnr lnr-sync"></span>
                                 <p class="hover-text">compare</p>
-                            </a>
-                            <a href="" class="social-info">
+                            </a> -->
+                            <a href="/productdetails/<%= product._id %>" class="social-info">
                                 <span class="lnr lnr-move"></span>
                                 <p class="hover-text">view more</p>
                             </a>
@@ -419,15 +419,15 @@
                                 <span class="ti-bag"></span>
                                 <p class="hover-text">add to bag</p>
                             </a>
-                            <a href="" class="social-info">
+                            <a href="/addtoWishlist/<%= product._id %>" class="social-info">
                                 <span class="lnr lnr-heart"></span>
                                 <p class="hover-text">Wishlist</p>
                             </a>
-                            <a href="" class="social-info">
+                            <!-- <a href="" class="social-info">
                                 <span class="lnr lnr-sync"></span>
                                 <p class="hover-text">compare</p>
-                            </a>
-                            <a href="" class="social-info">
+                            </a> -->
+                            <a href="/productdetails/<%= product._id %>" class="social-info">
                                 <span class="lnr lnr-move"></span>
                                 <p class="hover-text">view more</p>
                             </a>

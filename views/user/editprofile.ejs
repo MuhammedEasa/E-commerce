@@ -140,7 +140,7 @@ body{background-color:#222222}.card{border:none}.image{position:relative}.image 
                         <div class="inputs"> <label>Name</label> <input class="form-control" type="text" value="<%= userdetails.username %> "  name="name" placeholder="Name"></div>
                     </div>
                     <div class="col-md-6">
-                        <div class="inputs"> <label>Email</label> <input class="form-control" type="text"  value="<%= userdetails.email %>" name="email" placeholder="Email"> </div>
+                        <div class="inputs"> <label>Email</label> <input class="form-control" type="text"  value="<%= userdetails.email %>" name="email" placeholder="Email" disabled> </div>
                     </div>
                 </div>
                 
@@ -256,7 +256,63 @@ body{background-color:#222222}.card{border:none}.image{position:relative}.image 
         </div>
       </div>
     </footer>
-    
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          const form = document.querySelector('form');
+  
+          form.addEventListener('submit', function (event) {
+              let valid = true;
+  
+              // Remove existing error messages
+              const errorMessages = document.querySelectorAll('.error-message');
+              errorMessages.forEach(function (errorMessage) {
+                  errorMessage.remove();
+              });
+  
+              // Validate Name
+              const nameInput = form.querySelector('[name="name"]');
+              if (nameInput.value.trim() === '') {
+                  displayError(nameInput, 'Please enter your Name.');
+                  valid = false;
+              }
+  
+            
+  
+              // Validate image file type
+              const imageInput = form.querySelector('#image');
+              const image = imageInput.files[0];
+  
+              if (image) {
+                  const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                  if (!allowedImageTypes.includes(image.type)) {
+                      displayError(imageInput, 'Please select a valid image file (JPEG, PNG, GIF).');
+                      valid = false;
+                  }
+  
+                  if (image.size > 1024 * 700) { // Limit image size to 700 KB
+                      displayError(imageInput, 'Please select an image with a size less than 700 KB.');
+                      valid = false;
+                  }
+              }
+  
+              if (!valid) {
+                  event.preventDefault(); // Prevent form submission if validation fails
+              }
+          });
+  
+          function displayError(inputElement, errorMessage) {
+              const errorDiv = document.createElement('div');
+              errorDiv.className = 'error-message';
+              errorDiv.textContent = errorMessage;
+              errorDiv.style.color = 'red'; // Set text color to red
+  
+              const parentDiv = inputElement.parentNode;
+              parentDiv.appendChild(errorDiv);
+          }
+      });
+  </script>
+  
+  
 <!-- Include SweetAlert2 CSS and JS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
